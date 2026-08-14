@@ -1,0 +1,16 @@
+id,name,sku,category,reorder_level,cost_price,price
+1,Wireless Mouse,ELEC-001,Electronics,20,15.00,29.99
+2,USB-C Hub,ELEC-002,Electronics,15,25.00,49.99
+3,Mechanical Keyboard,ELEC-003,Electronics,10,40.00,79.99
+4,Cotton T-Shirt,CLOTH-001,Clothing,25,18.00,34.99
+5,Denim Jeans,CLOTH-002,Clothing,15,30.00,59.99
+6,Granola Bars,FOOD-001,Food,50,6.00,12.99
+7,Mixed Nuts,FOOD-002,Food,30,10.00,18.99
+8,Copy Paper,OFFICE-001,Office Supplies,100,4.00,8.99
+9,Ballpoint Pens,OFFICE-002,Office Supplies,40,7.00,14.99
+10,Desk Organizer,OFFICE-003,Office Supplies,20,12.00,24.99
+11,Office Chair,FURN-001,Furniture,5,150.00,299.99
+12,Standing Desk,FURN-002,Furniture,3,225.00,449.99
+13,Green Tea,BEV-001,Beverages,60,8.00,15.99
+14,Coffee Beans,BEV-002,Beverages,40,12.00,24.99
+15,Sparkling Water,BEV-003,Beverages,80,6.00,11.99

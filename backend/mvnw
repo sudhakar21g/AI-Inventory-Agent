@@ -1,0 +1,39 @@
+#!/bin/sh
+# Maven Wrapper startup script for UN*X systems
+# Downloads and runs Maven if not already available
+
+set -e
+
+MAVEN_VERSION="3.9.6"
+WRAPPER_JAR=".mvn/wrapper/maven-wrapper.jar"
+WRAPPER_PROPERTIES=".mvn/wrapper/maven-wrapper.properties"
+MAVEN_HOME="${HOME}/.m2/wrapper/dists/apache-maven-${MAVEN_VERSION}"
+
+# Determine the project base directory
+if [ -z "$MAVEN_PROJECTBASEDIR" ]; then
+    MAVEN_PROJECTBASEDIR=$(cd "$(dirname "$0")" && pwd)
+fi
+export MAVEN_PROJECTBASEDIR
+
+# Check if Maven is available on PATH
+if command -v mvn >/dev/null 2>&1; then
+    exec mvn "$@"
+fi
+
+# Download Maven if not cached
+if [ ! -d "$MAVEN_HOME" ]; then
+    echo "Downloading Apache Maven ${MAVEN_VERSION}..."
+    mkdir -p "$MAVEN_HOME"
+    MAVEN_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+    if command -v curl >/dev/null 2>&1; then
+        curl -fsSL "$MAVEN_URL" | tar xz --strip-components=1 -C "$MAVEN_HOME"
+    elif command -v wget >/dev/null 2>&1; then
+        wget -qO- "$MAVEN_URL" | tar xz --strip-components=1 -C "$MAVEN_HOME"
+    else
+        echo "Error: Neither curl nor wget found. Cannot download Maven." >&2
+        exit 1
+    fi
+fi
+
+export PATH="${MAVEN_HOME}/bin:${PATH}"
+exec mvn "$@"

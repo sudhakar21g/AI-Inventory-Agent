@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suppliers - AI Inventory Agent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="bi bi-box-seam-fill"></i></div>
+            <div>
+                <h2>AI Inventory</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li><a href="products.html"><i class="bi bi-box"></i> Products</a></li>
+            <li><a href="inventory.html"><i class="bi bi-arrow-left-right"></i> Inventory</a></li>
+            <li class="active"><a href="suppliers.html"><i class="bi bi-truck"></i> Suppliers</a></li>
+            <li><a href="sales.html"><i class="bi bi-cart-check"></i> Sales</a></li>
+            <li><a href="purchases.html"><i class="bi bi-bag"></i> Purchases</a></li>
+            <li><a href="ai-agent.html"><i class="bi bi-robot"></i> AI Agent</a></li>
+            <li><a href="reports.html"><i class="bi bi-graph-up"></i> Reports</a></li>
+            <li><a href="profile.html"><i class="bi bi-person-circle"></i> Profile</a></li>
+            <li class="logout-item"><a href="#" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="top-bar d-flex justify-content-between align-items-center mb-4">
+            <button class="btn d-md-none" onclick="toggleSidebar()"><i class="bi bi-list fs-4"></i></button>
+            <h4 class="mb-0">Suppliers</h4>
+            <div class="d-flex align-items-center gap-2">
+                <span id="userDisplay"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="d-flex gap-2 flex-wrap align-items-center">
+                <div class="search-bar mb-0 flex-grow-1">
+                    <div class="search-input">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search suppliers..." oninput="searchSuppliers()">
+                    </div>
+                </div>
+                <button class="btn btn-outline" onclick="toggleFilter('suppliersFilterPanel')"><i class="bi bi-funnel"></i> Filters</button>
+            </div>
+            <button class="btn btn-primary" onclick="resetSupplierForm(); openModal('addSupplierModal')">
+                <i class="bi bi-plus-lg"></i> Add Supplier
+            </button>
+        </div>
+
+        <div class="filter-panel" id="suppliersFilterPanel">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Has Email</label>
+                    <select class="form-control" id="supplierEmailFilter">
+                        <option value="">All</option>
+                        <option value="yes">With Email</option>
+                        <option value="no">Without Email</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Has Phone</label>
+                    <select class="form-control" id="supplierPhoneFilter">
+                        <option value="">All</option>
+                        <option value="yes">With Phone</option>
+                        <option value="no">Without Phone</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort By</label>
+                    <select class="form-control" id="supplierSortFilter">
+                        <option value="">Default</option>
+                        <option value="name">Name A-Z</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-primary" onclick="applySupplierFilters()"><i class="bi bi-funnel"></i> Apply</button>
+                    <button class="btn btn-outline" onclick="clearSupplierFilters()"><i class="bi bi-x-lg"></i> Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="suppliersTableBody">
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="loading-overlay"><div class="spinner"></div> Loading suppliers...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="addSupplierModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="supplierModalTitle">Add New Supplier</h3>
+                <button class="close-btn" onclick="closeModal('addSupplierModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="supplierForm" onsubmit="saveSupplier(event)">
+                    <input type="hidden" id="editSupplierId" value="">
+                    <div class="form-group">
+                        <label for="supplierName">Supplier Name *</label>
+                        <input type="text" id="supplierName" class="form-control" placeholder="Supplier name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierContact">Contact Person</label>
+                        <input type="text" id="supplierContact" class="form-control" placeholder="Contact person name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supplierEmail">Email</label>
+                            <input type="email" id="supplierEmail" class="form-control" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierPhone">Phone</label>
+                            <input type="text" id="supplierPhone" class="form-control" placeholder="+1 (555) 000-0000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierAddress">Address</label>
+                        <textarea id="supplierAddress" class="form-control" placeholder="Full address"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addSupplierModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('supplierForm').requestSubmit()">
+                    <i class="bi bi-check-lg"></i> Save Supplier
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/suppliers.js"></script>
+</body>
+</html>

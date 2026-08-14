@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - AI Inventory Agent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="bi bi-box-seam-fill"></i></div>
+            <div>
+                <h2>AI Inventory</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li><a href="products.html"><i class="bi bi-box"></i> Products</a></li>
+            <li><a href="inventory.html"><i class="bi bi-arrow-left-right"></i> Inventory</a></li>
+            <li><a href="suppliers.html"><i class="bi bi-truck"></i> Suppliers</a></li>
+            <li><a href="sales.html"><i class="bi bi-cart-check"></i> Sales</a></li>
+            <li><a href="purchases.html"><i class="bi bi-bag"></i> Purchases</a></li>
+            <li><a href="ai-agent.html"><i class="bi bi-robot"></i> AI Agent</a></li>
+            <li class="active"><a href="reports.html"><i class="bi bi-graph-up"></i> Reports</a></li>
+            <li><a href="profile.html"><i class="bi bi-person-circle"></i> Profile</a></li>
+            <li class="logout-item"><a href="#" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="top-bar d-flex justify-content-between align-items-center mb-4">
+            <button class="btn d-md-none" onclick="toggleSidebar()"><i class="bi bi-list fs-4"></i></button>
+            <h4 class="mb-0">Reports</h4>
+            <div class="d-flex align-items-center gap-2">
+                <span id="userDisplay"></span>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+                <h3>Date Range</h3>
+                <button class="btn btn-primary btn-sm" onclick="generateReports()">
+                    <i class="bi bi-arrow-repeat"></i> Generate
+                </button>
+            </div>
+            <div class="form-row" style="max-width: 500px;">
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Sales Report</h3>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="bi bi-currency-dollar"></i></div>
+                        <div class="stat-info">
+                            <h4 id="reportTotalSales">$0.00</h4>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="bi bi-receipt"></i></div>
+                        <div class="stat-info">
+                            <h4 id="reportSaleCount">0</h4>
+                            <p>Sale Count</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salesReportChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Purchase Report</h3>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="bi bi-currency-dollar"></i></div>
+                        <div class="stat-info">
+                            <h4 id="reportTotalPurchases">$0.00</h4>
+                            <p>Total Purchases</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="bi bi-bag"></i></div>
+                        <div class="stat-info">
+                            <h4 id="reportPurchaseCount">0</h4>
+                            <p>Purchase Count</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="purchaseReportChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h3>Inventory Report</h3>
+            </div>
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 16px;">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="bi bi-box"></i></div>
+                    <div class="stat-info">
+                        <h4 id="reportTotalProducts">0</h4>
+                        <p>Products</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="bi bi-arrow-up-circle"></i></div>
+                    <div class="stat-info">
+                        <h4 id="reportStockIn">0</h4>
+                        <p>Stock In</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="bi bi-arrow-down-circle"></i></div>
+                    <div class="stat-info">
+                        <h4 id="reportStockOut">0</h4>
+                        <p>Stock Out</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <h4 id="reportLowStock">0</h4>
+                        <p>Low Stock</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="inventoryReportChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>
