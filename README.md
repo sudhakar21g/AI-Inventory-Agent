@@ -2,6 +2,13 @@
 
 An intelligent inventory management system with AI-powered forecasting, anomaly detection, and automated reorder suggestions. Built with Spring Boot, Flask, Bootstrap 5.3, and MySQL.
 
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Flask](https://img.shields.io/badge/Flask-AI%20Service-lightgrey)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)
+
 ---
 
 ## Tech Stack
